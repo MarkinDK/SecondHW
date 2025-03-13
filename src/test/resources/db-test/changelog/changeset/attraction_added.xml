@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2" author="MarkinDK">
+        <createTable tableName="attractions">
+            <column name="attraction_id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text"/>
+            <column name="attraction_type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address_id" type="uuid">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="MarkinDK">
+        <addForeignKeyConstraint
+                baseTableName="attractions"
+                baseColumnNames="address_id"
+                referencedTableName="addresses"
+                referencedColumnNames="address_id"
+                constraintName="fk_attraction_address"/>
+    </changeSet>
+
+    <changeSet id="4" author="MarkinDK">
+        <createTable tableName="attraction_service">
+            <column name="attraction_id" type="uuid">
+                <constraints primaryKey="true" unique="true"/>
+            </column>
+            <column name="service_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="5" author="MarkinDK">
+        <addForeignKeyConstraint
+                baseTableName="attraction_service"
+                baseColumnNames="attraction_id"
+                referencedTableName="attractions"
+                referencedColumnNames="attraction_id"
+                constraintName="fk_attraction_service_attraction"/>
+
+        <addForeignKeyConstraint
+                baseTableName="attraction_service"
+                baseColumnNames="service_id"
+                referencedTableName="services"
+                referencedColumnNames="service_id"
+                constraintName="fk_attraction_service_service"/>
+    </changeSet>
+</databaseChangeLog>
