@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  database:
+    image: postgres
+    container_name: database
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=secondhw
+    ports:
+      - '5435:5432'
+
+  secondhw:
+    container_name: secondhw
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/secondhw
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+    depends_on:
+      - database
